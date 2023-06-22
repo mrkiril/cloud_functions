@@ -16,7 +16,9 @@ from cloudevents.http.event import CloudEvent
 
 logger = logging.getLogger(__name__)
 
-LOG_HANDLERS = ["default"] if os.getenv("SERVICE_ENVIRONMENT", "dev") else ["json"]
+SERVICE_ENVIRONMENT = os.getenv("SERVICE_ENVIRONMENT", "dev")
+iS_DEV = SERVICE_ENVIRONMENT == "dev"
+LOG_HANDLERS = ["default"] if iS_DEV else ["json"]
 
 LOG_CONFIG = {
     "version": 1,
@@ -58,7 +60,10 @@ def create_db_engine(
     :param connection_name: You cant get it from GCP console
     """
     if is_unix_socker:
-        unix_socket_path = f"/cloudsql/{connection_name}"
+        if iS_DEV:
+            unix_socket_path = connection_name
+        else:
+            unix_socket_path = f"/cloudsql/{connection_name}"
         url = sa.engine.url.URL.create(
             drivername="postgresql+psycopg2",
             username=user,
@@ -141,8 +146,8 @@ def hello(cloud_event: CloudEvent):
     with db_session.begin() as session:
         res = session.execute(text("SELECT 1;"))
         print(f"DB result: {res.first()}")
-    print("= " * 31)
+    print("= " * 32)
     print("= = = = = = = = = = END of the function = = = = = = = = = = ")
     print(f"= = = = = = = = = = DB time: {round(time.time() - db_time, 2)}")
     print(f"= = = = = = = = = = All time: {round(time.time() - start_time, 2)}")
-    print("= " * 31)
+    print("= " * 32)
