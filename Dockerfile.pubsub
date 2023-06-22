@@ -1,0 +1,17 @@
+FROM google/cloud-sdk:436.0.0-emulators
+
+WORKDIR /app
+
+RUN apt update && apt install -y python3-pip curl
+COPY env.yaml /root/.config/gcloud/emulators/pubsub/env.yaml
+COPY pubsub_run.sh /pubsub_run.sh
+COPY python-pubsub /python-pubsub
+
+ARG PIP_REQUIREMENTS_FILE=requirements/test.txt
+COPY requirements requirements
+RUN pip install --upgrade pip  && pip install --no-cache-dir -r $PIP_REQUIREMENTS_FILE
+
+RUN (gcloud beta emulators pubsub env-init)
+
+COPY . .
+CMD ["bash", "pubsub_run.sh"]

@@ -1,0 +1,4 @@
+-r prod.txt
+
+google-cloud-pubsub==2.17.1
+avro==1.11.1

@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  cfservice:
+    container_name: cfservice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m main_cf_server --target hello --signature-type=event --debug --port=8080
+    env_file:
+      - .env
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app/
+    depends_on:
+      - postgres
+
+  pubsub:
+    container_name: pubsub
+    build:
+      context: .
+      dockerfile: Dockerfile.pubsub
+    env_file:
+      - .env
+    networks:
+      - default
+    ports:
+      - "8085:8085"
+
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    networks:
+        - default
+    ports:
+      - "54323:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - cfPostgresSocketVol:/var/run/postgresql
+volumes:
+  pgdata:
+  cfPostgresSocketVol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: volumes/postgresql-volume
