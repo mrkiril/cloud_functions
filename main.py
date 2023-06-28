@@ -133,9 +133,9 @@ def hello(cloud_event: CloudEvent):
         )
 
     r = requests.get('https://postman-echo.com/get?foo1=bar1&foo2=bar2')
-    logger.info("Status: %s", r.status_code)
+    print("Status: %s", r.status_code)
     print("Content-type:", r.headers['content-type'])
-    print(f"Body: {r.text[:15]}")
+    print(f"Response body len: {len(r.text)}")
 
     db_time = time.time()
     db_session = sessionmaker(db_engine)
