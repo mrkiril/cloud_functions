@@ -142,8 +142,8 @@ def hello(cloud_event: CloudEvent):
     with db_session.begin() as session:
         res = session.execute(text("SELECT 1;"))
         print(f"DB result: {res.first()}")
-    print("= " * 32)
+    print("= " * 30)
     print("= = = = = = = = = = END of the function = = = = = = = = = = ")
     print(f"= = = = = = = = = = DB time: {round(time.time() - db_time, 2)}")
     print(f"= = = = = = = = = = All time: {round(time.time() - start_time, 2)}")
-    print("= " * 32)
+    print("= " * 30)
