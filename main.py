@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 SERVICE_ENVIRONMENT = os.getenv("SERVICE_ENVIRONMENT", "dev")
 iS_DEV = SERVICE_ENVIRONMENT == "dev"
-LOG_HANDLERS = ["default"] if iS_DEV else ["json"]
+LOG_HANDLERS = ["default"] if iS_DEV else ["default"]
 
 LOG_CONFIG = {
     "version": 1,
@@ -30,10 +30,6 @@ LOG_CONFIG = {
         },
     },
     "handlers": {
-        # "json": {
-        #     "class": "ContainerEngineHandler",
-        #     "stream": "ext://sys.stdout",
-        # },
         "default": {
             "formatter": "default",
             "class": "logging.StreamHandler",

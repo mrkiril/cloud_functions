@@ -14,8 +14,7 @@ page with using the UnixSocket for communication between the Cloud Function and 
 make up
 ```
 
-STARTUP run all of this commands in separate terminals
+After it push some messages to the Pub/Sub topic
 ```bash
-make create-topic
 make publish
 ```
