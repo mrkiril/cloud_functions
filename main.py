@@ -132,10 +132,10 @@ def hello(cloud_event: CloudEvent):
             publishTime="",
         )
 
-    r = requests.get('https://postman-echo.com/get?foo1=bar1&foo2=bar2')
-    print("Status: %s", r.status_code)
-    print("Content-type:", r.headers['content-type'])
-    print(f"Response body len: {len(r.text)}")
+    REQUEST_URL = "https://postman-echo.com/get?foo1=bar1&foo2=bar2"
+    r = requests.get(REQUEST_URL)
+    print(f"Request {REQUEST_URL} -> status: {r.status_code}", )
+    print(f"Content-type: {r.headers['content-type']} Response body len: {len(r.text)}")
 
     db_time = time.time()
     db_session = sessionmaker(db_engine)
@@ -144,6 +144,6 @@ def hello(cloud_event: CloudEvent):
         print(f"DB result: {res.first()}")
     print("= " * 30)
     print("= = = = = = = = = = END of the function = = = = = = = = = = ")
-    print(f"= = = = = = = = = = DB time: {round(time.time() - db_time, 2)}")
-    print(f"= = = = = = = = = = All time: {round(time.time() - start_time, 2)}")
+    print(f"= = = = = = = = = = DB time: {round(time.time() - db_time, 2)}sec")
+    print(f"= = = = = = = = = = All time: {round(time.time() - start_time, 2)}sec")
     print("= " * 30)
